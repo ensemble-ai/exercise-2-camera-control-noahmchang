@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dtm13sp1jsrwi"]
+[gd_scene load_steps=11 format=3 uid="uid://dtm13sp1jsrwi"]
 
 [ext_resource type="Script" path="res://scripts/vessel.gd" id="1_gvlq5"]
 [ext_resource type="AudioStream" uid="uid://dawegxxwk8pqb" path="res://assets/audio/LASRBeam_Plasma Loop_01.wav" id="3_6xqm4"]
@@ -28,13 +28,9 @@ emission_energy_multiplier = 11.04
 [sub_resource type="SphereMesh" id="SphereMesh_atlhb"]
 material = SubResource("StandardMaterial3D_fo0bd")
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_lr052"]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hw14a"]
 streams_count = 1
 stream_0/stream = ExtResource("3_6xqm4")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_et32u"]
-streams_count = 1
-stream_0/stream = ExtResource("4_0msye")
 
 [node name="Vessel" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.238204, 0)
@@ -63,10 +59,8 @@ enabled = true
 
 [node name="Audio" type="Node2D" parent="."]
 
-[node name="Terraforming" type="AudioStreamPlayer2D" parent="Audio"]
-stream = SubResource("AudioStreamRandomizer_lr052")
-bus = &"SFX"
+[node name="HyperSpeed" type="AudioStreamPlayer3D" parent="Audio"]
+stream = ExtResource("4_0msye")
 
-[node name="HyperSpeed" type="AudioStreamPlayer2D" parent="Audio"]
-stream = SubResource("AudioStreamRandomizer_et32u")
-bus = &"SFX"
+[node name="Terraforming" type="AudioStreamPlayer3D" parent="Audio"]
+stream = SubResource("AudioStreamRandomizer_hw14a")

@@ -11,15 +11,23 @@ const WIDTH:float = RADIUS * 2.0
 const BASE_SPEED = 50
 const HYPER_SPEED = 300
 
+var boost_is_held:bool = false
+
 func _physics_process(_delta):
 	
 	var speed = BASE_SPEED
+	var boost_location = global_position
+	
 	$ParticleTrail.visible = false 
 	if Input.is_action_pressed("ui_accept"):
-		_play($Audio/HyperSpeed)
+		if boost_is_held:
+			_play($Audio/HyperSpeed)
+			$Audio/HyperSpeed.global_position = boost_location
 		speed = HYPER_SPEED
 		$ParticleTrail.visible = true
 
+	$Audio/Terraforming.global_position = global_position
+	
 	if Input.is_action_just_pressed("raise_terrain"):
 		_play($Audio/Terraforming)
 		terrain_manager.move_vertex_below_position(global_position, terrforming_power)
@@ -45,7 +53,13 @@ func _physics_process(_delta):
 		velocity.z = move_toward(velocity.z, 0, speed)
 
 	move_and_slide()
+	
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		boost_is_held = true
+	else:
+		boost_is_held = false
 
-func _play(player:AudioStreamPlayer2D) -> void:
+func _play(player:AudioStreamPlayer3D) -> void:
 	if !player.playing:
 		player.play()
