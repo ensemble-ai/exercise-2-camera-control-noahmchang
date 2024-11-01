@@ -10,28 +10,22 @@ extends CameraControllerBase
 var frame_position: Vector3
 var already_switched:bool = false
 
-#func _ready() -> void:
-	#frame_position = Vector3(top_left.x, 0, top_left.y)
-
-#func _ready() -> void:
-	#rotation_degrees.x = -90
-	#frame_position = Vector3(target.position.x, 0, target.position.z)
-
-func switch_camera_1():
+func switch_camera_1() -> void:
 	if !already_switched:
 		rotation_degrees.x = -90
 		frame_position = Vector3(%Vessel.position.x, dist_above_target, %Vessel.position.z)
 		global_position = Vector3(%Vessel.position.x, dist_above_target, %Vessel.position.z)
 		already_switched = true
-	#frame_position = Vector3(target.position.x, 0, target.position.z)
-	#global_position = Vector3(target.position.x, dist_above_target, target.position.z)
 
 func _process(delta: float) -> void:
 	if %CameraSelector.current_controller == 1:
 		switch_camera_1()
 		frame_position.x += autoscroll_speed.x * delta
 		global_position = frame_position
-		#frame_position.z += autoscroll_speed.z * delta
+
+		if draw_camera_logic:
+			draw_logic()
+		super(delta)
 
 		var frame_left = frame_position.x + top_left.x
 		var frame_right = frame_position.x + bottom_right.x
@@ -54,9 +48,6 @@ func _process(delta: float) -> void:
 
 		frame_position.x += autoscroll_speed.x * delta
 		global_position = frame_position
-		
-		if draw_camera_logic:
-			draw_logic()
 
 func draw_logic() -> void:
 
@@ -68,10 +59,10 @@ func draw_logic() -> void:
 		mesh_instance.mesh = immediate_mesh
 		mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		
-		var left:float = -box_width 
-		var right:float = box_width 
-		var top:float = -box_height 
-		var bottom:float = box_height 
+		var left:float = -box_width / 2
+		var right:float = box_width / 2
+		var top:float = -box_height / 2
+		var bottom:float = box_height / 2
 		
 		immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES, material)
 		immediate_mesh.surface_add_vertex(Vector3(right, 0, top))

@@ -12,7 +12,7 @@ const BASE_SPEED = 50
 const HYPER_SPEED = 300
 
 var boost_is_held:bool = false
-
+var boosting:bool = false
 func _physics_process(_delta):
 	
 	var speed = BASE_SPEED
@@ -20,11 +20,14 @@ func _physics_process(_delta):
 	
 	$ParticleTrail.visible = false 
 	if Input.is_action_pressed("ui_accept"):
+		boosting = true
 		if boost_is_held:
 			_play($Audio/HyperSpeed)
 			$Audio/HyperSpeed.global_position = boost_location
 		speed = HYPER_SPEED
 		$ParticleTrail.visible = true
+	else:
+		boosting = false
 
 	$Audio/Terraforming.global_position = global_position
 	
